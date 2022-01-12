@@ -1,7 +1,8 @@
-import testCommand from "./commands/testCommand.js";
-
-const test = testCommand;
+import commands from "./commands/Commands.js";
+import errors from "./errors/Errors.js";
 
 export default {
-    test
+    commands,
+    errors
 }
+
