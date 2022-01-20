@@ -1,6 +1,8 @@
+let channelName = ''
+let ts = ''
 
 // The open_modal shortcut opens a plain old modal
-export default async ({ shortcut, ack, client, logger }) => {
+export const openModal = async ({ shortcut, ack, client, logger }) => {
 
   try {
     // Acknowledge shortcut request
@@ -11,6 +13,7 @@ export default async ({ shortcut, ack, client, logger }) => {
       trigger_id: shortcut.trigger_id,
       view: {
         type: "modal",
+        callback_id: "reply_anonymously",
         title: {
           type: "plain_text",
           text: "익명으로 스레드에 답글달기"
@@ -33,7 +36,7 @@ export default async ({ shortcut, ack, client, logger }) => {
             },
             element: {
               type: "plain_text_input",
-              action_id: "plain_input",
+              action_id: "reply_text",
               placeholder: {
                 type: "plain_text",
                 text: "여기에 적어주세요"
@@ -45,9 +48,27 @@ export default async ({ shortcut, ack, client, logger }) => {
       }
     });
 
-    logger.info(result);
+    ts = shortcut.message_ts;
+    channelName = shortcut.channel.name
   }
   catch (error) {
     logger.error(error);
   }
+  
 };
+
+export const reply = async ({ ack, body, view, client }) => {
+  await ack();
+
+  try {
+    const response = await client.chat.postMessage({
+      channel: channelName,
+      thread_ts: ts,
+      text: view.state.values.replyInput.reply_text.value
+    })
+
+    console.log(response);
+  } catch (error) {
+    console.log(error)
+  }
+}

@@ -1,5 +1,15 @@
 export default async ({ command, ack, say }) => {
   await ack();
 
-  await say(command.text)
+  console.log(command)
+
+  await say({
+    blocks: [{
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": command.text
+      }
+    }]
+  })
 };
