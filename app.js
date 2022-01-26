@@ -1,21 +1,27 @@
-import { signing_secret, token, appToken } from './config.js';
 import Bolt from '@slack/bolt';
+import dotenv from 'dotenv'
 
-import question from './controller/QuestionController.js';
-import { openModal, reply } from './controller/ReplyShortcutController.js';
+import dbconnect from './src/config/DBConnection.js'
+import question from './src/controller/QuestionController.js';
+import { openModal, reply } from './src/controller/ReplyShortcutController.js';
+
+
+dotenv.config();
 
 const app = new Bolt.App({
-  signingSecret: signing_secret,
-  token: token,
-  appToken: appToken,
+  signingSecret: process.env.SIGNING_SECRET,
+  token: process.env.TOKEN,
+  appToken: process.env.APPTOKEN,
   socketMode: true,
-  port: 3000
+  port: process.env.PORT
 });
+
+dbconnect();
 
 (async () => {
   await app.start();
 
-  console.log(`a4q bot is running on 3000 port`);
+  console.log(`a4q bot is running on ${process.env.PORT} port`);
 })();
 
 app.command('/a4q', question);

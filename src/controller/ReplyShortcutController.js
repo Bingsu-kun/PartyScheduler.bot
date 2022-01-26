@@ -1,5 +1,9 @@
+let teamId = ''
+let teamDomain = ''
+let channelId = ''
 let channelName = ''
 let ts = ''
+let userName = ''
 
 // The open_modal shortcut opens a plain old modal
 export const openModal = async ({ shortcut, ack, client, logger }) => {
@@ -48,8 +52,12 @@ export const openModal = async ({ shortcut, ack, client, logger }) => {
       }
     });
 
+    teamId = shortcut.team.id;
+    teamDomain = shortcut.team.domain;
+    channelId = shortcut.channel.id;
+    channelName = shortcut.channel.name;
+    userName = shortcut.user.name;
     ts = shortcut.message_ts;
-    channelName = shortcut.channel.name
   }
   catch (error) {
     logger.error(error);
@@ -59,6 +67,8 @@ export const openModal = async ({ shortcut, ack, client, logger }) => {
 
 export const reply = async ({ ack,  view, client }) => {
   await ack();
+
+  console.log(view)
   
   try {
     const response = await client.chat.postMessage({
