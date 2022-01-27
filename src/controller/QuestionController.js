@@ -1,5 +1,5 @@
 import IncomingMessage from '../model/Message.js';
-import { save } from '../service/MessageService.js';
+import { saveMessage } from '../service/DataAccessService.js';
 
 export default async ({ command, ack, say }) => {
   await ack();
@@ -16,7 +16,7 @@ export default async ({ command, ack, say }) => {
     }]
   })
 
-  save(IncomingMessage(command.team_id, command.team_domain, command.channel_id, 
+  saveMessage(IncomingMessage(command.team_id, command.team_domain, command.channel_id, 
     command.channel_name, command.user_name, command.text));
 
 };

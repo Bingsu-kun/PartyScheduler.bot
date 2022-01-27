@@ -1,9 +1,7 @@
-let teamId = ''
-let teamDomain = ''
-let channelId = ''
-let channelName = ''
-let ts = ''
-let userName = ''
+import IncommingComment from '../model/Comment.js';
+import { saveComment } from '../service/DataAccessService.js';
+
+const comment = IncommingComment('','','','','','','');
 
 // The open_modal shortcut opens a plain old modal
 export const openModal = async ({ shortcut, ack, client, logger }) => {
@@ -52,12 +50,12 @@ export const openModal = async ({ shortcut, ack, client, logger }) => {
       }
     });
 
-    teamId = shortcut.team.id;
-    teamDomain = shortcut.team.domain;
-    channelId = shortcut.channel.id;
-    channelName = shortcut.channel.name;
-    userName = shortcut.user.name;
-    ts = shortcut.message_ts;
+    comment.team_id = shortcut.team.id;
+    comment.team_domain = shortcut.team.domain;
+    comment.channel_id = shortcut.channel.id;
+    comment.channel_name = shortcut.channel.name;
+    comment.user_name = shortcut.user.name;
+    comment.ts = shortcut.message_ts;
   }
   catch (error) {
     logger.error(error);
@@ -68,17 +66,23 @@ export const openModal = async ({ shortcut, ack, client, logger }) => {
 export const reply = async ({ ack,  view, client }) => {
   await ack();
 
-  console.log(view)
+  const text = view.state.values.replyInput.reply_text.value;
+
+  comment.text = text;
   
   try {
     const response = await client.chat.postMessage({
       channel: channelName,
       thread_ts: ts,
-      text: view.state.values.replyInput.reply_text.value
+      text: text
     })
-
-    console.log(response);
   } catch (error) {
-    console.log(error)
+    console.log('error on replying to slack. Cause : ' + error)
+  }
+
+  try {
+    saveComment(comment);
+  } catch (error) {
+    console.log('error on saving comment. Cause : ' + error)
   }
 }

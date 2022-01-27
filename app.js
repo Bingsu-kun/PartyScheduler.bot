@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import dbconnect from './src/config/DBConnection.js'
 import question from './src/controller/QuestionController.js';
 import { openModal, reply } from './src/controller/ReplyShortcutController.js';
+import { teamFind, channelFind, messageFind } from './src/service/DataAccessService.js';
 
 
 dotenv.config();
@@ -13,10 +14,35 @@ const app = new Bolt.App({
   token: process.env.TOKEN,
   appToken: process.env.APPTOKEN,
   socketMode: true,
-  port: process.env.PORT
+  port: process.env.PORT,
+  customRoutes: [{
+    path: '/health-check',
+    method: 'GET',
+    handler: (req, res) => {
+      res.writeHead(200,{'Content-Type': 'text/html; charset=utf-8'});
+      res.end('Anony4Questioner 앱이 동작 중 입니다.');
+    }
+  },
+  {
+    path: '/teams',
+    method: 'GET',
+    handler: (req, res) => {
+      res.writeHead(200,{'Content-Type': 'application/json; charset=utf-8'});
+      teamFind().then((value) => {
+        const result = JSON.stringify(value);
+        res.write(result);
+        res.end();
+      })
+    }
+  }]
 });
 
-dbconnect();
+try {
+  dbconnect();
+} catch (error) {
+  console.log('DB Connet Faild. Cause : ' + error);
+}
+
 
 (async () => {
   await app.start();
