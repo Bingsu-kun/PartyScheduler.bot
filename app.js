@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import dbconnect from './src/config/DBConnection.js'
 import question from './src/controller/QuestionController.js';
 import { openModal, reply } from './src/controller/ReplyShortcutController.js';
-import { teamFind, channelFind, messageFind } from './src/service/DataAccessService.js';
+import { teamFind, channelFind, messageFind, commentFind } from './src/service/DataAccessService.js';
 
 
 dotenv.config();
@@ -34,7 +34,44 @@ const app = new Bolt.App({
         res.end();
       })
     }
-  }]
+  },
+  {
+    path: '/channels',
+    method: 'GET',
+    handler: (req, res) => {
+      res.writeHead(200,{'Content-Type': 'application/json; charset=utf-8'});
+      channelFind().then((value) => {
+        const result = JSON.stringify(value);
+        res.write(result);
+        res.end();
+      })
+    }
+  },
+  {
+    path: '/messages',
+    method: 'GET',
+    handler: (req, res) => {
+      res.writeHead(200,{'Content-Type': 'application/json; charset=utf-8'});
+      messageFind().then((value) => {
+        const result = JSON.stringify(value);
+        res.write(result);
+        res.end();
+      })
+    }
+  },
+  {
+    path: '/comments',
+    method: 'GET',
+    handler: (req, res) => {
+      res.writeHead(200,{'Content-Type': 'application/json; charset=utf-8'});
+      commentFind().then((value) => {
+        const result = JSON.stringify(value);
+        res.write(result);
+        res.end();
+      })
+    }
+  },
+]
 });
 
 try {
