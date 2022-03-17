@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Bingsu-kun/Anony4Questioner#readme",
   "dependencies": {
     "@slack/bolt": "^3.8.1",
+    "@slack/oauth": "^2.4.0",
     "@slack/web-api": "^6.5.1",
     "body-parser": "^1.19.1",
     "dotenv": "^14.3.2",
