@@ -1,6 +1,5 @@
 import Bolt from '@slack/bolt';
 import dotenv from 'dotenv'
-import oauth from '@slack/oauth'
 
 import dbconnect from './src/config/DBConnection.js'
 import question from './src/controller/QuestionController.js';
@@ -15,8 +14,18 @@ const app = new Bolt.App({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   stateSecret: 'whoareyou',
-  scopes: ["commands","chat:write","chat:write.public","channels:read","channels:join"],
-  installationStore: oauth.FileInstallationStore(),
+  scopes: ["commands","chat:write","channels:read","channels:join"],
+  installationStore: {
+    storeInstallation: async (installation) => {
+      console.log(installation)
+    },
+    fetchInstallation: async (installQuery) => {
+      console.log(installQuery)
+    },
+    deleteInstallation: async (installQuery) => {
+      console.log(installQuery)
+    }
+  },
   // token: process.env.TOKEN,
   appToken: process.env.APPTOKEN,
   socketMode: true,
