@@ -1,5 +1,6 @@
 import Bolt from '@slack/bolt';
 import dotenv from 'dotenv'
+import axios from 'axios'
 
 import dbconnect from './src/config/DBConnection.js'
 import question from './src/controller/QuestionController.js';
@@ -21,6 +22,21 @@ const app = new Bolt.App({
     handler: (req, res) => {
       res.writeHead(200,{'Content-Type': 'text/html; charset=utf-8'});
       res.end('Anony4Questioner 앱이 동작 중 입니다.');
+    }
+  },
+  {
+    path: '/redirect',
+    method: 'GET',
+    handler: (req, res) => {
+      const code = req.query.code
+      axios({
+        method: 'GET',
+        url: `https://slack.com/api/oauth.v2.access?code=${code}&client_id=${process.env.CLIENT_ID}&client-secret=${process.env.CLIENT_SECRET}`
+      }).then((res) => {
+        console.log(res.data)
+      }).catch((error) => {
+        console.log("ERROR!!")
+      })
     }
   },
   {
