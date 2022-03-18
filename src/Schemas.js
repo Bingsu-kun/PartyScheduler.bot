@@ -28,11 +28,19 @@ const comment_schema = new mongoose.Schema({
 })
 
 const auth_schema = new mongoose.Schema({
-  user_id: { type:  String},
-  is_enterprise_install: { type: Boolean, required: true },
-  team_id: { type: String },
-  enterprise_id: {type: String },
-  conversation_id: {type: String }
+  team: { id: { type: String }, name: { type: String } },
+  enterprise: { type: String },
+  user: { token: { type: String }, scope: { type: String }, id: { type: String } },
+  tokenType: { type: String },
+  isEnterpriseInstall: { type: boolean },
+  appId: { type: String },
+  authVersion: { type: String },
+  bot: {
+    scopes: [ { type: String } ],
+    token: { type: String },
+    userId: { type: String },
+    id: { type: String },
+  }
 })
 
 export { team_schema, channel_schema, message_schema, comment_schema, auth_schema };

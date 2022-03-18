@@ -9,13 +9,7 @@ const commentModel = new mongoose.model("comments", comment_schema);
 const authModel = new mongoose.model("auths", auth_schema);
 
 function saveAuth(installation) {
-  const auth = new authModel({
-    user_id: installation.userId,
-    is_enterprise_install: installation.isEnterpriseInstall,
-    team_id: installation.teamId,
-    enterprise_id: installation.enterpriseId,
-    conversation_id: installation.conversationId
-  })
+  const auth = new authModel(installation)
 
   auth.save()
     .then(() => {
@@ -29,7 +23,7 @@ function saveAuth(installation) {
 }
 
 async function findAuth(installQuery) {
-  const query = authModel.find(installQuery)
+  const query = authModel.find({ team: { id: installQuery.teamId } })
   const auth = await query
   return auth
 }
