@@ -29,7 +29,7 @@ function saveAuth(installation) {
 }
 
 async function findAuth(installQuery) {
-  const query = authModel.find(installQuery.teamId)
+  const query = authModel.find(installQuery)
   const auth = await query
   return auth
 }

@@ -28,9 +28,9 @@ const comment_schema = new mongoose.Schema({
 })
 
 const auth_schema = new mongoose.Schema({
-  user_id: { type: String, required: true },
+  user_id: { type:  String},
   is_enterprise_install: { type: Boolean, required: true },
-  team_id: { type: String, required: true },
+  team_id: { type: String },
   enterprise_id: {type: String },
   conversation_id: {type: String }
 })

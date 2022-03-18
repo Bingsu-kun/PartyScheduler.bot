@@ -4,8 +4,6 @@ import { saveMessage } from '../service/DataAccessService.js';
 export default async ({ command, ack, say }) => {
   await ack();
 
-  console.log(command)
-
   await say({
     blocks: [{
       "type": "section",
