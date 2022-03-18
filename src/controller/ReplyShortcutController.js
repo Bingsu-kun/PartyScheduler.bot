@@ -66,13 +66,15 @@ export const openModal = async ({ shortcut, ack, client, logger }) => {
 export const reply = async ({ ack, view, client, text }) => {
   await ack();
 
-  comment.text = text
+  const textInView = view.state.values.replyInput.reply_text.value;
+
+  comment.text = textInView;
   
   try {
     const response = await client.chat.postMessage({
       channel: comment.channel_name,
       thread_ts: comment.ts,
-      text: text
+      text: textInView
     })
   } catch (error) {
     console.log('error on replying to slack. Cause : ' + error)
