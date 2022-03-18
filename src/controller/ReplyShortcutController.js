@@ -63,17 +63,15 @@ export const openModal = async ({ shortcut, ack, client, logger }) => {
   
 };
 
-export const reply = async ({ ack,  view, client }) => {
+export const reply = async ({ ack, view, client, text }) => {
   await ack();
 
-  const text = view.state.values.replyInput.reply_text.value;
-
-  comment.text = text;
+  comment.text = text
   
   try {
     const response = await client.chat.postMessage({
-      channel: channelName,
-      thread_ts: ts,
+      channel: comment.channel_name,
+      thread_ts: comment.ts,
       text: text
     })
   } catch (error) {
