@@ -23,9 +23,16 @@ function saveAuth(installation) {
 }
 
 async function findAuth(installQuery) {
-  const query = await authModel.findOne({ team: { id: installQuery.teamId } }, (err,doc) => {
-    return doc || err
-  })
+  await authModel.findOne({ team: { id: installQuery.teamId } })
+    .then((err,doc) => {
+    if (!err)
+      return doc
+    else
+      throw err
+    })
+    .catch((err) => { 
+      console.log(err) 
+    })
 }
 
 function saveMessage(incomingMessage) {
