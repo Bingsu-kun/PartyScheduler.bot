@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import dbconnect from './src/config/DBConnection.js'
 import question from './src/controller/QuestionController.js';
 import { openModal, reply } from './src/controller/ReplyShortcutController.js';
-import { teamFind, channelFind, messageFind, commentFind } from './src/service/DataAccessService.js';
+import { teamFind, channelFind, messageFind, commentFind, saveAuth, findAuth } from './src/service/DataAccessService.js';
 
 
 dotenv.config();
@@ -17,13 +17,10 @@ const app = new Bolt.App({
   scopes: ["commands","chat:write","channels:read","channels:join"],
   installationStore: {
     storeInstallation: async (installation) => {
-      console.log(installation)
+      return await saveAuth(installation)
     },
     fetchInstallation: async (installQuery) => {
-      console.log(installQuery)
-    },
-    deleteInstallation: async (installQuery) => {
-      console.log(installQuery)
+      return await findAuth(installQuery)
     }
   },
   // token: process.env.TOKEN,

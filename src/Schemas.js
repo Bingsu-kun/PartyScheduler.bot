@@ -27,4 +27,12 @@ const comment_schema = new mongoose.Schema({
   date: { type: Date, default: Date.now(), required: true }
 })
 
-export { team_schema, channel_schema, message_schema, comment_schema };
+const auth_schema = new mongoose.Schema({
+  user_id: { type: String, required: true },
+  is_enterprise_install: { type: Boolean, required: true },
+  team_id: { type: String, required: true },
+  enterprise_id: {type: String },
+  conversation_id: {type: String }
+})
+
+export { team_schema, channel_schema, message_schema, comment_schema, auth_schema };

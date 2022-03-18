@@ -1,11 +1,38 @@
 import mongoose from 'mongoose';
 
-import { team_schema, channel_schema, message_schema, comment_schema } from '../Schemas.js';
+import { team_schema, channel_schema, message_schema, comment_schema, auth_schema } from '../Schemas.js';
 
 const teamModel = new mongoose.model("teams", team_schema);
 const channelModel = new mongoose.model("channels", channel_schema);
 const messageModel = new mongoose.model("messages", message_schema);
 const commentModel = new mongoose.model("comments", comment_schema);
+const authModel = new mongoose.model("auths", auth_schema);
+
+function saveAuth(installation) {
+  const auth = new authModel({
+    user_id: installation.userId,
+    is_enterprise_install: installation.isEnterpriseInstall,
+    team_id: installation.teamId,
+    enterprise_id: installation.enterpriseId,
+    conversation_id: installation.conversationId
+  })
+
+  auth.save()
+    .then(() => {
+      console.log('auth saved!');
+    })
+    .catch((error) => {
+      console.log('error on auth saving : ' + error);
+    })
+  
+  return auth
+}
+
+async function findAuth(installQuery) {
+  const query = authModel.find(installQuery.teamId)
+  const auth = await query
+  return auth
+}
 
 function saveMessage(incomingMessage) {
   const team = new teamModel({
@@ -104,18 +131,21 @@ async function teamFind() {
   return teams;
 }
 
-function channelFind() {
-  const channels = channelModel.find();
+async function channelFind() {
+  const query = channelModel.find();
+  const channels = await query
   return channels;
 }
 
-function messageFind() {
-  const messages = messageModel.find();
+async function messageFind() {
+  const query = messageModel.find();
+  const messages = await query
   return messages;
 }
 
-function commentFind() {
-  const comments = commentModel.find();
+async function commentFind() {
+  const query = commentModel.find();
+  const comments = await query
   return comments;
 }
 
@@ -125,5 +155,7 @@ export {
   teamFind,
   channelFind,
   messageFind,
-  commentFind
+  commentFind,
+  saveAuth,
+  findAuth
 };
