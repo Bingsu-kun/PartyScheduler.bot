@@ -17,7 +17,7 @@ const app = new Bolt.App({
   scopes: ["commands","chat:write","channels:read","channels:join"],
   installationStore: {
     storeInstallation: async (installation) => {
-      const saved = await saveAuth(installation)
+      const saved = await saveAuth(JSON.parse(installation))
       console.log(saved)
       return saved
     },

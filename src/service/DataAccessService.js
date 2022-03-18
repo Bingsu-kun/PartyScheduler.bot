@@ -23,16 +23,11 @@ function saveAuth(installation) {
 }
 
 async function findAuth(installQuery) {
-  await authModel.findOne({ team: { id: installQuery.teamId } })
-    .then((err,doc) => {
-    if (!err)
+  const docs = await authModel.find();
+  for (let doc of docs) {
+    if (doc.team.id === installQuery.teamId)
       return doc
-    else
-      throw err
-    })
-    .catch((err) => { 
-      console.log(err) 
-    })
+  }
 }
 
 function saveMessage(incomingMessage) {
