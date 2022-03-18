@@ -23,9 +23,9 @@ function saveAuth(installation) {
 }
 
 async function findAuth(installQuery) {
-  const query = authModel.find({ team: { id: installQuery.teamId } })
-  const auth = await query
-  return auth
+  const query = await authModel.findOne({ team: { id: installQuery.teamId } }, (err,doc) => {
+    return doc || err
+  })
 }
 
 function saveMessage(incomingMessage) {
@@ -121,26 +121,22 @@ function saveComment(incomingComment) {
 
 async function teamFind() {
   const query = teamModel.find();
-  const teams = await query
-  return teams;
+  return await query
 }
 
 async function channelFind() {
   const query = channelModel.find();
-  const channels = await query
-  return channels;
+  return await query
 }
 
 async function messageFind() {
   const query = messageModel.find();
-  const messages = await query
-  return messages;
+  return await query
 }
 
 async function commentFind() {
   const query = commentModel.find();
-  const comments = await query
-  return comments;
+  return await query
 }
 
 export {
