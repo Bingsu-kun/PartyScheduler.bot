@@ -17,12 +17,14 @@ const app = new Bolt.App({
   scopes: ["commands","chat:write","channels:read","channels:join"],
   installationStore: {
     storeInstallation: async (installation) => {
-      console.log("installation : " + installation)
-      return await saveAuth(installation)
+      const saved = await saveAuth(installation)
+      console.log(saved)
+      return saved
     },
     fetchInstallation: async (installQuery) => {
-      console.log("installQuery : " + installQuery)
-      return await findAuth(installQuery)
+      const found = await findAuth(installQuery)
+      console.log(found)
+      return found
     }
   },
   // token: process.env.TOKEN,
