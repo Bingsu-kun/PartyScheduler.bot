@@ -32,7 +32,7 @@ const auth_schema = new mongoose.Schema({
   enterprise: { type: String },
   user: { token: { type: String }, scope: { type: String }, id: { type: String } },
   tokenType: { type: String },
-  isEnterpriseInstall: { type: boolean },
+  isEnterpriseInstall: { type: Boolean },
   appId: { type: String },
   authVersion: { type: String },
   bot: {
