@@ -108,10 +108,18 @@ try {
   console.log(`owlnonymous bot is running on ${process.env.PORT} port`);
 })();
 
-// /a4q 커맨드 등록. /owl 커맨드 사용시 이 메서드 실행
-app.command('/owl', question);
+// /owl 커맨드 등록. /owl 커맨드 사용시 이 메서드 실행
+try {
+  app.command('/owl', question);
+} catch (error) {
+  console.log(error)
+}
 
-// 숏컷 클릭시 이 메서드 실행
-app.shortcut('reply_on_thread', openModal);
-// 모달에서 받아온 텍스트를 해당 메세지의 답글로 달아주는 메서드.
-app.view('reply_anonymously', reply)
+try {
+  // 숏컷 클릭시 이 메서드 실행
+  app.shortcut('reply_on_thread', openModal);
+  // 모달에서 받아온 텍스트를 해당 메세지의 답글로 달아주는 메서드.
+  app.view('reply_anonymously', reply)
+} catch (error) {
+  console.log(error)
+}

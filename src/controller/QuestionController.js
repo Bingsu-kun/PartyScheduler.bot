@@ -15,7 +15,7 @@ await sheet.loadHeaderRow()
 export default async ({ command, ack, say, text }) => {
 
   await ack();
-
+  
   await say({
     blocks: [{
       "type": "section",
