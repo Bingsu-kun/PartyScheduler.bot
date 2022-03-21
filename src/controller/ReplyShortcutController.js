@@ -1,16 +1,35 @@
-import IncommingComment from '../model/Comment.js';
-import { saveComment } from '../service/DataAccessService.js';
+import { GoogleSpreadsheet } from 'google-spreadsheet';
+import dotenv from 'dotenv'
 
-const comment = IncommingComment('','','','','','','');
+dotenv.config()
 
-// The open_modal shortcut opens a plain old modal
+const doc = new GoogleSpreadsheet('1WvqtIaRkJPJ4kKu8mfOzsX08YpxUwuAoIToXN9p8ePQ');
+await doc.useServiceAccountAuth({
+  client_email: process.env.GOOGLE_APIEMAIL,
+  private_key: process.env.GOOGLE_APIKEY.replace(/\\n/g, "\n")
+})
+await doc.loadInfo();
+const sheet = doc.sheetsByTitle['답글']
+await sheet.loadHeaderRow()
+
+const comment = {
+  team_id: String,
+  team_domain: String,
+  channel_id: String,
+  channel_name: String,
+  ts: String,
+  user_name: String,
+  text: String
+}
+
+// openModal 메서드로 모달을 띄워줍니다.
 export const openModal = async ({ shortcut, ack, client, logger }) => {
 
   try {
-    // Acknowledge shortcut request
+    // ack를 통해 통신 가능함을 클라이언트에게 알려줍니다.
     await ack();
 
-    // Call the views.open method using one of the built-in WebClients
+    // 클라이언트의 views.open 메서드를 통해 모달을 띄워줍니다.
     const result = await client.views.open({
       trigger_id: shortcut.trigger_id,
       view: {
@@ -34,14 +53,14 @@ export const openModal = async ({ shortcut, ack, client, logger }) => {
             block_id: "replyInput",
             label: {
               type: "plain_text",
-              text: "제가 익명으로 전달해 드릴게요! (+ㅅ+)"
+              text: "제가 익명으로 전달해 드릴게요! 🦉"
             },
             element: {
               type: "plain_text_input",
               action_id: "reply_text",
               placeholder: {
                 type: "plain_text",
-                text: "여기에 적어주세요"
+                text: "여기에 질문을 적어주세요"
               },
               multiline: true
             }
@@ -81,7 +100,16 @@ export const reply = async ({ ack, view, client, text }) => {
   }
 
   try {
-    saveComment(comment);
+    await sheet.addRow({
+      date: Date.now(),
+      team_id: comment.team_id,
+      team_name: comment.team_domain,
+      channel_id: comment.channel_id,
+      channel_name: comment.channel_name,
+      ts: comment.ts,
+      user_name: comment.user_name,
+      text: comment.text
+    })
   } catch (error) {
     console.log('error on saving comment. Cause : ' + error)
   }
