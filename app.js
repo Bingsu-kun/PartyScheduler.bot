@@ -101,10 +101,6 @@ try {
   console.log('DB Connet Faild. Cause : ' + error);
 }
 
-process.on('uncaughtException', (error) => {
-  console.log('에상치 못한 에러가 발생했습니다. Cause : ' + error)
-})
-
 // 앱 구동
 (async () => {
   await app.start();
@@ -119,3 +115,7 @@ app.command('/owl', question);
 app.shortcut('reply_on_thread', openModal);
 // 모달에서 받아온 텍스트를 해당 메세지의 답글로 달아주는 메서드.
 app.view('reply_anonymously', reply)
+
+process.on('uncaughtException', (error) => {
+  console.log('에상치 못한 에러가 발생했습니다. Cause : ' + error)
+})
