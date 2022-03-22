@@ -83,13 +83,15 @@ export const openModal = async ({ shortcut, ack, client, logger }) => {
 };
 
 export const reply = async ({ ack, view, client, text }) => {
-  await ack();
 
   const textInView = view.state.values.replyInput.reply_text.value;
 
   comment.text = textInView;
   
   try {
+
+    await ack();
+    
     const response = await client.chat.postMessage({
       channel: comment.channel_name,
       thread_ts: comment.ts,
@@ -101,7 +103,7 @@ export const reply = async ({ ack, view, client, text }) => {
 
   try {
     await sheet.addRow({
-      date: Date.now(),
+      date: Date.now().toString(),
       team_id: comment.team_id,
       team_name: comment.team_domain,
       channel_id: comment.channel_id,

@@ -14,21 +14,26 @@ await sheet.loadHeaderRow()
 
 export default async ({ command, ack, say, text }) => {
 
-  await ack();
-  
-  await say({
-    blocks: [{
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": command.text
-      }
-    }]
-  })
+  try {
+
+    await ack();
+
+    await say({
+      blocks: [{
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": command.text
+        }
+      }]
+    })
+  } catch (error) {
+    console.log("error occurred while sending message. Cause : " + error)
+  }
 
   try {
     await sheet.addRow({ 
-      date: Date.now(),
+      date: Date.now().toString(),
       team_id: command.team_id, 
       team_name: command.team_domain,
       channel_id: command.channel_id, 
