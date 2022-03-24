@@ -1,5 +1,6 @@
 import Bolt from '@slack/bolt';
 import dotenv from 'dotenv'
+import https from 'https'
 
 import dbconnect from './src/config/DBConnection.js'
 import question from './src/controller/QuestionController.js';
@@ -106,6 +107,10 @@ try {
   await app.start();
 
   console.log(`owlnonymous bot is running on ${process.env.PORT} port`);
+
+  setInterval(() => {
+    https.get("https://anony4questioner.herokuapp.com/health-check")
+  },60000)
 })();
 
 // /owl 커맨드 등록. /owl 커맨드 사용시 이 메서드 실행
