@@ -1,5 +1,6 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import dotenv from 'dotenv'
+import KorDate from '../utils/KorDate'
 
 dotenv.config()
 
@@ -95,7 +96,13 @@ export const reply = async ({ ack, view, client, text }) => {
     const response = await client.chat.postMessage({
       channel: comment.channel_name,
       thread_ts: comment.ts,
-      text: textInView
+      blocks: [{
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": textInView
+        }
+      }]
     })
   } catch (error) {
     console.log('error on replying to slack. Cause : ' + error)
@@ -103,7 +110,7 @@ export const reply = async ({ ack, view, client, text }) => {
 
   try {
     await sheet.addRow({
-      date: Date.now().toString(),
+      date: KorDate(),
       team_id: comment.team_id,
       team_name: comment.team_domain,
       channel_id: comment.channel_id,

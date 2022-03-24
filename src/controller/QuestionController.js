@@ -1,5 +1,6 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import dotenv from 'dotenv'
+import KorDate from '../utils/KorDate'
 
 dotenv.config()
 
@@ -33,7 +34,7 @@ export default async ({ command, ack, say, text }) => {
 
   try {
     await sheet.addRow({ 
-      date: Date.now().toString(),
+      date: KorDate(),
       team_id: command.team_id, 
       team_name: command.team_domain,
       channel_id: command.channel_id, 
