@@ -1,6 +1,7 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import dotenv from 'dotenv'
-import KorDate from '../utils/KorDate'
+
+import KorDate from '../utils/KorDate.js'
 
 dotenv.config()
 
