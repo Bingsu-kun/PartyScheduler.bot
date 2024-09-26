@@ -1,4 +1,4 @@
-# PartyScheduler.bot
+# Anony4Questioner.bot
 
 #### Noti: 디스코드 봇 입니다!
 
